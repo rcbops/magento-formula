@@ -1,0 +1,26 @@
+{% set version = salt['pillar.get']('magento_version', '1.9.0.1') %}
+{% set db_interface = salt['pillar.get']("interfaces:private", "eth0") %}
+{% set sources = {
+    '1.9.0.1': {
+        'version': '1.0.9.1',
+        'url': 'http://d5b3acbcf6a196a72723-a7fb92452994b9b521c30569741e999e.r38.cf1.rackcdn.com/magento-1.9.0.1.tar.gz',
+        'hash': 'f4b2a06887eb486da3210e16b6a3425e' 
+    }
+} %}
+{% set magento = {
+    'slave_user': salt['pillar.get']('magento:slave:user', 'magento_slave'),
+    'slave_password': salt['pillar.get']('magento:slave:password', 'magento_slave'),
+    'slave_host': salt['pillar.get']('magento:slave:host', "'%'"),
+
+    'db_user': salt['pillar.get']('magento:db:user', 'magento'),
+    'db_password': salt['pillar.get']('magento:db:password', 'magento_password'),
+    'db_host': salt['pillar.get']('magento:db:host', "'%'"),
+
+    'db_name': salt['pillar.get']('magento:db:name', 'magento'),
+
+    'db_interface': db_interface,
+    'db_write_port': salt['pillar.get']('magento:db:write:port', '3306'),
+    'db_read_port': salt['pillar.get']('magento:db:read:port', '3306'),
+    'master': salt['pillar.get']('magento:db:host', 'localhost'),
+    'source': sources[version]
+} %}
