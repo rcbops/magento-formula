@@ -100,15 +100,3 @@ memcached-service:
     - watch:
       - file: /etc/memcached.conf
 
-/root/fix_tables.sh:
-  file.managed:
-    - source: salt://magento/files/fixtables/fix_tables.sh
-    - mode: 600
-    - template: jinja
-
-#fix_tables:
-#  cmd.retcode:
-#    - name: echo "Running fix_tables" && bash fix_tables.sh &
-#    - cwd: /root
-#    - require:
-#      - file: /root/fix_tables.sh
