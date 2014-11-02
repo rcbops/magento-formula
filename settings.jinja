@@ -11,16 +11,11 @@
     'slave_user': salt['pillar.get']('magento:slave:user', 'magento_slave'),
     'slave_password': salt['pillar.get']('magento:slave:password', 'magento_slave'),
     'slave_host': salt['pillar.get']('magento:slave:host', "'%'"),
-
     'db_user': salt['pillar.get']('magento:db:user', 'magento'),
     'db_password': salt['pillar.get']('magento:db:password', 'magento_password'),
     'db_host': salt['pillar.get']('magento:db:host', "'%'"),
-
     'db_name': salt['pillar.get']('magento:db:name', 'magento'),
-
     'db_interface': db_interface,
-    'db_write_port': salt['pillar.get']('magento:db:write:port', '3306'),
-    'db_read_port': salt['pillar.get']('magento:db:read:port', '3306'),
-    'master': salt['pillar.get']('magento:db:host', 'localhost'),
+    'master': salt['mine.get']('roles:db', 'network.ip_addrs', 'grain').values()[0][0],
     'source': sources[version]
 } %}
