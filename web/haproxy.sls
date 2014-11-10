@@ -40,7 +40,7 @@ rm {{ keyname }}.crt {{ keyname }}.key:
 
 /etc/haproxy/haproxy.cfg:
   file.managed:
-    - source: salt://magento/files/haproxy/haproxy.cfg
+    - source: salt://magento/files/haproxy/web-haproxy.cfg
     - template: jinja
     - makedirs: True
 
