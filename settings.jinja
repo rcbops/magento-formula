@@ -1,4 +1,4 @@
-{% set version = salt['pillar.get']('magento_version', '1.9.0.1') %}
+{% set version = salt['pillar.get']('magento:version', '1.9.0.1') %}
 {% set db_interface = salt['pillar.get']("interfaces:private", "eth0") %}
 {% set sources = {
     '1.9.0.1': {
@@ -7,15 +7,21 @@
         'hash': 'f4b2a06887eb486da3210e16b6a3425e' 
     }
 } %}
+{% set web_ids = salt['mine.get']('roles:web', 'network.ip_addrs', 'grain').keys()|sort %}
+
 {% set magento = {
-    'slave_user': salt['pillar.get']('magento:slave:user', 'magento_slave'),
-    'slave_password': salt['pillar.get']('magento:slave:password', 'magento_slave'),
-    'slave_host': salt['pillar.get']('magento:slave:host', "'%'"),
-    'db_user': salt['pillar.get']('magento:db:user', 'magento'),
-    'db_password': salt['pillar.get']('magento:db:password', 'magento_password'),
-    'db_host': salt['pillar.get']('magento:db:host', "'%'"),
-    'db_name': salt['pillar.get']('magento:db:name', 'magento'),
+    'slave_user': salt['pillar.get']('magento:slave:user'),
+    'slave_password': salt['pillar.get']('magento:slave:password'),
+    'slave_host': salt['pillar.get']('magento:slave:host'),
+    'db_user': salt['pillar.get']('magento:db:user'),
+    'db_password': salt['pillar.get']('magento:db:password'),
+    'db_name': salt['pillar.get']('magento:db:database', 'magento'),
     'db_interface': db_interface,
-    'master': salt['mine.get']('roles:db', 'network.ip_addrs', 'grain').values()[0][0],
+    'db_host': salt['pillar.get']('magento:db:host'),
+    'db_write_host': salt['pillar.get']('magento:db:write:host'),
+    'db_write_port': salt['pillar.get']('magento:db:write:port', '3306'),
+    'db_read_host': salt['pillar.get']('magento:db:read:host', False),
+    'db_read_port': salt['pillar.get']('magento:db:read:port', '3306'),
+    'is_web_primary': web_ids[0] == grains['id'],
     'source': sources[version]
 } %}

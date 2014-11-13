@@ -60,16 +60,32 @@
             </db>
             <default_setup>
                 <connection>
-                    <host><![CDATA[{{ magento.master }}]]></host>
+                    <host><![CDATA[{{ magento.db_write_host }}]]></host>
                     <username><![CDATA[{{ magento.db_user }}]]></username>
                     <password><![CDATA[{{ magento.db_password }}]]></password>
                     <dbname><![CDATA[{{ magento.db_name }}]]></dbname>
+                    <port><![CDATA[{{ magento.db_write_port }}]]></port>
                     <initStatements><![CDATA[SET NAMES utf8]]></initStatements>
                     <model><![CDATA[mysql4]]></model>
                     <type><![CDATA[pdo_mysql]]></type>
                     <active>1</active>
                 </connection>
             </default_setup>
+            {% if magento.db_read_host %}
+            <default_read>
+                <connection>
+                    <host><![CDATA[{{ magento.db_read_host }}]]></host>
+                    <username><![CDATA[{{ magento.db_user }}]]></username>
+                    <password><![CDATA[{{ magento.db_password }}]]></password>
+                    <dbname><![CDATA[{{ magento.db_name }}]]></dbname>
+                    <port><![CDATA[{{ magento.db_read_port }}]]></port>
+                    <initStatements><![CDATA[SET NAMES utf8]]></initStatements>
+                    <model><![CDATA[mysql4]]></model>
+                    <type><![CDATA[pdo_mysql]]></type>
+                    <active>1</active>
+                </connection>
+            </default_read>
+            {% endif %}
         </resources>
         <session_save>{% raw %}{{session_save}}{% endraw %}</session_save>
     </global>

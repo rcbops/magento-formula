@@ -74,11 +74,26 @@ cleanup:
 /etc/apache2/sites-enabled/000-default:
   file.absent:
     - name: /etc/apache2/sites-enabled/000-default
+    - require:
+      - pkg: requirements
+
+/etc/apache2/sites-available/default:
+  file.managed:
+    - source: salt://magento/files/apache/sites-enabled/default
+    - require:
+      - pkg: requirements
 
 /etc/apache2/sites-enabled/default:
-  file.managed:
-    - name: /etc/apache2/sites-enabled/default
-    - source: salt://magento/files/apache/sites-enabled/default
+  file.symlink:
+    - target: /etc/apache2/sites-available/default
+    - require:
+      - file: /etc/apache2/sites-available/default
+
+/etc/apache2/mods-enabled/rewrite.load:
+  file.symlink:
+    - target: /etc/apache2/mods-available/rewrite.load
+    - require:
+      - pkg: requirements
 
 apache-service:
   service:
@@ -86,6 +101,7 @@ apache-service:
     - running
     - watch:
       - file: /etc/apache2/sites-enabled/default
+      - file: /etc/apache2/mods-enabled/rewrite.load
 
 /etc/memcached.conf:
   file.managed:
